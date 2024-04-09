@@ -2,6 +2,8 @@ import { initializeFirebase } from './model/database/firebaseConnection.js';
 import { SESSION_STORAGE_KEYS } from './model/constants/storageConstants.js';
 
 
+const BASE_URL = window.location.href.includes('github.io') ? '/ArtistsSongsTracker' : '';
+
 let mFirebaseApp = null;
 let mFirestore = null;
 let mFirebaseAuth = null;
@@ -10,6 +12,7 @@ let mCurrentUser = null;
 
 
 async function init() {
+	init_indexHTML();
 	await init_Firebase();
 	init_CurrentUser();
 	console.log("current user: ", mCurrentUser); //TEST TEST TEST
@@ -47,7 +50,12 @@ function init_CurrentUser() {
 	}
 }
 
+function init_indexHTML() {
+	const registerButton = document.getElementById("register-button");
+	registerButton.parentElement.href = `${BASE_URL}/src/view/registration.html`;
+}
+
 init();
 
 
-export { mFirebaseApp, mFirestore, mFirebaseAuth, mCurrentUser };
+export { BASE_URL, mFirebaseApp, mFirestore, mFirebaseAuth, mCurrentUser };

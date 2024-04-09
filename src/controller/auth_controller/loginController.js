@@ -2,6 +2,7 @@ import { Authentication } from "../../model/authentication/Authentication.js";
 import { UserDAO } from "../../model/database/db_DAOs/userDAO.js";
 import { User } from "../../model/domain/user/User.js";
 import { SESSION_STORAGE_KEYS } from "../../model/constants/storageConstants.js";
+import { BASE_URL } from "../../main.js";
 
 
 const mAuthentication = new Authentication();
@@ -29,7 +30,7 @@ function loginUser() {
 					console.log("User logged in: ", JSON.stringify(user));
 					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
 
-					window.location.assign("/ArtistsSongsTracker/src/view/artistSelection.html");
+					window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
 				});
 		})
 		.catch((error) => {

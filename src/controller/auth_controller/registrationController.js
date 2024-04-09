@@ -2,6 +2,7 @@ import { Authentication } from "../../model/authentication/Authentication.js";
 import { UserDAO } from "../../model/database/db_DAOs/userDAO.js";
 import { User } from "../../model/domain/user/User.js";
 import { SESSION_STORAGE_KEYS } from "../../model/constants/storageConstants.js";
+import { BASE_URL } from "../../main.js";
 
 
 const mAuthentication = new Authentication();
@@ -13,6 +14,9 @@ const passwordTextField = document.getElementById("registration-field-password")
 const confirmPasswordTextField = document.getElementById("registration-field-password-confirm");
 
 const registrationButton = document.getElementById("registration-button");
+
+const loginButton = document.getElementById("login-button");
+loginButton.parentElement.href = `${BASE_URL}`;
 
 
 function registerUser() {
@@ -33,7 +37,7 @@ function registerUser() {
 				.then(() => {
 					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(userObj));
 
-					window.location.assign("../../view/artistSelection.html");
+					window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
 				});
 		})
 		.catch((error) => {
