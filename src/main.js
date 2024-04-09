@@ -51,8 +51,10 @@ function init_CurrentUser() {
 }
 
 function init_indexHTML() {
-	const registerButton = document.getElementById("register-button");
-	registerButton.parentElement.href = `${BASE_URL}/src/view/registration.html`;
+	if (window.location.href.includes("index.html")) {
+		const registerButton = document.getElementById("register-button");
+		registerButton.parentElement.href = `${BASE_URL}/src/view/registration.html`;
+	}
 }
 
 init();
