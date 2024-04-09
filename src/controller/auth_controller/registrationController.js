@@ -33,7 +33,7 @@ function registerUser() {
 				.then(() => {
 					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(userObj));
 
-					window.location.assign("/src/view/artistSelection.html");
+					window.location.assign("ArtistsSongsTracker/src/view/artistSelection.html");
 				});
 		})
 		.catch((error) => {

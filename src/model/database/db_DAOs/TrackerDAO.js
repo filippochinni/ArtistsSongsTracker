@@ -3,6 +3,7 @@ import { collection, addDoc, getDocs, setDoc, doc, getDoc } from "https://www.gs
 import { DB_NODES } from "../db_costants/dbNodes.js";
 import { Tracker } from "../../domain/business/Tracker.js";
 
+
 export class TrackerDAO {
 	#db;
 
