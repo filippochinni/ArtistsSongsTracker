@@ -1,5 +1,6 @@
 export class User {
 	#userId;
+	#admin;
 	#username;
 	#email;
 	#password;
@@ -10,6 +11,8 @@ export class User {
 		this.#email = email;
 		this.#password = password;
 
+		this.#admin = false;
+
 		this.#trackerList = {};
 	}
 
@@ -19,6 +22,14 @@ export class User {
 
 	set userId(value) {
 		this.#userId = value;
+	}
+
+	get admin() {
+		return this.#admin;
+	}
+
+	set admin(value) {
+		this.#admin = value;
 	}
 
 	get username() {
@@ -56,6 +67,7 @@ export class User {
 	toJSON() {
 		return {
 			userId: this.#userId,
+			admin: this.#admin,
 			username: this.#username,
 			email: this.#email,
 			password: this.#password,
@@ -65,6 +77,7 @@ export class User {
 
 	toJSON_special() {
 		return {
+			admin: this.#admin,
 			username: this.#username,
 			email: this.#email,
 			password: this.#password,
@@ -77,6 +90,7 @@ export class User {
 
 		user.#userId = userId;
 
+		user.#admin = json.admin;
 		user.#username = json.username;
 		user.#email = json.email;
 		user.#password = json.password;
@@ -86,7 +100,7 @@ export class User {
 	}
 
 	toString() {
-		return `User: {${this.#userId}, ${this.#username}, ${this.#email}, ${this.#password}, ${this.#trackerList}}`;
+		return `User: {${this.#userId}, ${this.#admin}, ${this.#username}, ${this.#email}, ${this.#password}, ${this.#trackerList}}`;
 	}
 
 }

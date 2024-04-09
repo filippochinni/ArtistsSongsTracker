@@ -50,4 +50,4 @@ function init_CurrentUser() {
 init();
 
 
-export { mFirebaseApp, mFirestore, mFirebaseAuth };
+export { mFirebaseApp, mFirestore, mFirebaseAuth, mCurrentUser };

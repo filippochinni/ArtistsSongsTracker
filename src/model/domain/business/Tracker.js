@@ -1,4 +1,5 @@
 export class Tracker {
+	#trackerId;
 	#artist;
 	#description;
 	#logo;
@@ -13,6 +14,14 @@ export class Tracker {
 		this.#searchBackgroundImage = searchBackgroundImage;
 		this.#backgroundImage = backgroundImage;
 		this.#songList = songList;
+	}
+
+	get trackerId() {
+		return this.#trackerId;
+	}
+
+	set trackerId(value) {
+		this.#trackerId = value;
 	}
 
 	get artist() {
@@ -74,8 +83,10 @@ export class Tracker {
 		};
 	}
 
-	static fromJSON(json) {
+	static fromJSON(json, trackerId) {
 		const tracker = new Tracker();
+
+		tracker.#trackerId = trackerId;
 
 		tracker.#artist = json.artist;
 		tracker.#description = json.description;
@@ -88,7 +99,7 @@ export class Tracker {
 	}
 
 	toString() {
-		return `Tracker: {${fieldNamesConversion.artist}:${this.#artist}, ${fieldNamesConversion.description}:${this.#description}, ${fieldNamesConversion.logo}:${this.#logo}, ${fieldNamesConversion.searchBackgroundImage}:${this.#searchBackgroundImage}, ${fieldNamesConversion.backgroundImage}:${this.#backgroundImage}, ${fieldNamesConversion.songList}:${this.#songList}}`;
+		return `Tracker: {${this.#trackerId}, ${fieldNamesConversion.artist}:${this.#artist}, ${fieldNamesConversion.description}:${this.#description}, ${fieldNamesConversion.logo}:${this.#logo}, ${fieldNamesConversion.searchBackgroundImage}:${this.#searchBackgroundImage}, ${fieldNamesConversion.backgroundImage}:${this.#backgroundImage}, ${fieldNamesConversion.songList}:${this.#songList}}`;
 	}
 
 }

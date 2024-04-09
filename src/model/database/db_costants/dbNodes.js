@@ -1,5 +1,6 @@
 const DB_NODES = {
 	USERS: 'users',
+	TRACKERS: 'trackers',
 };
 
 
