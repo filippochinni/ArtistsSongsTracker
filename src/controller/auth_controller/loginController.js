@@ -29,7 +29,7 @@ function loginUser() {
 					console.log("User logged in: ", JSON.stringify(user));
 					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
 
-					window.location.assign("ArtistsSongsTracker/src/view/artistSelection.html");
+					window.location.assign("/ArtistsSongsTracker/src/view/artistSelection.html");
 				});
 		})
 		.catch((error) => {
