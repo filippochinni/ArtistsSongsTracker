@@ -1,4 +1,4 @@
-DB_CONSTANTS_USER = {
+const DB_CONSTANTS_USER = {
 	//USER_ID: 'userId',
 	USERNAME: 'username',
 	EMAIL: 'email',

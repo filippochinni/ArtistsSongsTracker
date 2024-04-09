@@ -1,8 +1,8 @@
-SESSION_STORAGE_KEYS = {
+const SESSION_STORAGE_KEYS = {
 	CURRENT_USER: 'currentUser',
 };
 
-LOCAL_STORAGE_KEYS = {
+const LOCAL_STORAGE_KEYS = {
 
 };
 

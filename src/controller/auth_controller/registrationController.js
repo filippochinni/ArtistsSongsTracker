@@ -27,10 +27,13 @@ function registerUser() {
 
 	mAuthentication.register(email, password)
 		.then((userId) => {
-			const userObj = new User(username, email, password);
+			let userObj = new User(username, email, password);
+			userObj.userId = userId;
 			mUserDAO.saveUser(userObj, userId)
 				.then(() => {
 					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(userObj));
+
+					window.location.assign("/src/view/artistSelection.html");
 				});
 		})
 		.catch((error) => {

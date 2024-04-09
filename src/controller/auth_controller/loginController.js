@@ -25,11 +25,11 @@ function loginUser() {
 	mAuthentication.login(email, password)
 		.then((userId) => {
 			mUserDAO.getUser(userId)
-				.then((userData) => {
-					const user = User.fromJSON(userData, userId);
+				.then((user) => {
+					console.log("User logged in: ", JSON.stringify(user));
 					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
 
-					window.location.assign("src/view/artistSelection.html");
+					window.location.assign("/src/view/artistSelection.html");
 				});
 		})
 		.catch((error) => {

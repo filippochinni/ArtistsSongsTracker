@@ -10,7 +10,7 @@ export class User {
 		this.#email = email;
 		this.#password = password;
 
-		this.#trackerList = [];
+		this.#trackerList = {};
 	}
 
 	get userId() {
@@ -54,6 +54,16 @@ export class User {
 	}
 
 	toJSON() {
+		return {
+			userId: this.#userId,
+			username: this.#username,
+			email: this.#email,
+			password: this.#password,
+			trackerList: this.#trackerList
+		};
+	}
+
+	toJSON_special() {
 		return {
 			username: this.#username,
 			email: this.#email,

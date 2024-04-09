@@ -1,4 +1,5 @@
 import { initializeFirebase } from './model/database/firebaseConnection.js';
+import { SESSION_STORAGE_KEYS } from './model/constants/storageConstants.js';
 
 
 let mFirebaseApp = null;
@@ -41,8 +42,8 @@ async function init_Firebase() {
 }
 
 function init_CurrentUser() {
-	if (sessionStorage.getItem("currentUser") != null) {
-		mCurrentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+	if (sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_USER) != null) {
+		mCurrentUser = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_USER));
 	}
 }
 
