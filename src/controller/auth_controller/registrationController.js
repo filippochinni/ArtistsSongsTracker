@@ -1,6 +1,7 @@
 import { Authentication } from "../../model/authentication/Authentication.js";
 import { UserDAO } from "../../model/database/db_DAOs/userDAO.js";
 import { User } from "../../model/domain/user/User.js";
+import { SESSION_STORAGE_KEYS } from "../../model/constants/storageConstants.js";
 
 
 const mAuthentication = new Authentication();
@@ -29,7 +30,7 @@ function registerUser() {
 			const userObj = new User(username, email, password);
 			mUserDAO.saveUser(userObj, userId)
 				.then(() => {
-					sessionStorage.setItem("currentUser", JSON.stringify(userObj));
+					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(userObj));
 				});
 		})
 		.catch((error) => {

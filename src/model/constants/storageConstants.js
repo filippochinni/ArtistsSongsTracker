@@ -1,10 +1,10 @@
 SESSION_STORAGE_KEYS = {
-
-}
+	CURRENT_USER: 'currentUser',
+};
 
 LOCAL_STORAGE_KEYS = {
 
-}
+};
 
 
 export { SESSION_STORAGE_KEYS, LOCAL_STORAGE_KEYS };

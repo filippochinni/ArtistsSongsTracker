@@ -1,6 +1,7 @@
 import { Authentication } from "../../model/authentication/Authentication.js";
 import { UserDAO } from "../../model/database/db_DAOs/userDAO.js";
 import { User } from "../../model/domain/user/User.js";
+import { SESSION_STORAGE_KEYS } from "../../model/constants/storageConstants.js";
 
 
 const mAuthentication = new Authentication();
@@ -17,7 +18,7 @@ function loginUser() {
 	const password = passwordTextField.value;
 
 	if (!checkFields()) {
-		alert("Please fill all the fields correctly");
+		alert("Please fill all the fields");
 		return;
 	}
 
@@ -26,7 +27,7 @@ function loginUser() {
 			mUserDAO.getUser(userId)
 				.then((userData) => {
 					const user = User.fromJSON(userData, userId);
-					sessionStorage.setItem("currentUser", JSON.stringify(user));
+					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
 
 					window.location.assign("src/view/artistSelection.html");
 				});

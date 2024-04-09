@@ -1,5 +1,6 @@
 import { mFirestore } from "../../../main.js";
 import { collection, addDoc, getDocs, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { DB_NODES } from "../db_costants/dbNodes.js";
 
 export class UserDAO {
 	#db;
@@ -10,7 +11,7 @@ export class UserDAO {
 
 	async saveUser(userObj, userId) {
 		try {
-			await setDoc(doc(this.#db, "users", userId), userObj.toJSON());
+			await setDoc(doc(this.#db, DB_NODES.USERS, userId), userObj.toJSON());
 			console.log("User saved in db: ", userId, userObj);
 		} catch (e) {
 			console.error("Error saving user in db: ", e);
@@ -18,7 +19,7 @@ export class UserDAO {
 	}
 
 	async getUser(userId) {
-		const docRef = doc(this.#db, "users", userId);
+		const docRef = doc(this.#db, DB_NODES.USERS, userId);
 		const docSnap = await getDoc(docRef);
 
 		if (docSnap.exists()) {
