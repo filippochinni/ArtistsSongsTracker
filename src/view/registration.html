@@ -13,10 +13,30 @@
 </head>
 <body>
 	<header>
-		<h1>temp</h1>
+		<h1>Register to Artists Songs Tracker</h1>
 	</header>
-	
 
-	<script type="module" src="../../src/controller/"></script>
+	<div id="registration-div">
+		<div id="registration-info-div">
+			<p>Register</p>
+		</div>
+
+		<div id="registration-form-div" class="input-form-div">
+			<input type="text" id="registration-field-username" class="input-text-field" placeholder="Username">
+			<input type="email" id="registration-field-email" class="input-text-field" placeholder="Email">
+			<input type="password" id="registration-field-password" class="input-text-field" placeholder="Password">
+			<input type="password" id="registration-field-password-confirm" class="input-text-field" placeholder="Confirm Password">
+
+			<button id="registration-button" class="submit-form-button">Register</button>
+		</div>
+
+		<div id="registration-login-div">
+			<p>Already have an account?</p>
+			<a href="../../index.html"><button id="login-button" class="text-hyperlink">Login</button></a>
+		</div>
+	</div>
+	
+	<script type="module" src="../../src/main.js"></script>
+	<script type="module" src="../../src/controller/auth_controller/registrationController.js"></script>
 </body>
 </html>

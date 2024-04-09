@@ -1,39 +1,34 @@
-import { firestore } from "../firebaseConnection.js";
-import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { mFirestore } from "../../../main.js";
+import { collection, addDoc, getDocs, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
-class UserDAO {
+export class UserDAO {
 	#db;
 
 	constructor() {
-		this.#db = firestore;
+		this.#db = mFirestore;
 	}
 
-	async prova() {
-		console.log("prova");
-		console.log(this.#db);
-
+	async saveUser(userObj, userId) {
 		try {
-			const docRef = await addDoc(collection(this.#db, "users"), {
-				first: "Ada",
-				last: "Lovelace",
-				born: 1815
-			});
-			console.log("Document written with ID: ", docRef.id);
+			await setDoc(doc(this.#db, "users", userId), userObj.toJSON());
+			console.log("User saved in db: ", userId, userObj);
 		} catch (e) {
-			console.error("Error adding document: ", e);
+			console.error("Error saving user in db: ", e);
 		}
 	}
 
-	async provaGet() {
-		const querySnapshot = await getDocs(collection(this.#db, "users"));
-		querySnapshot.forEach((doc) => {
-			console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-			console.log(doc.data());
-		});
+	async getUser(userId) {
+		const docRef = doc(this.#db, "users", userId);
+		const docSnap = await getDoc(docRef);
+
+		if (docSnap.exists()) {
+			console.log("Snapshot Result: ", docSnap.data());
+			return Promise.resolve(docSnap.data());
+		} else {
+			console.error("There is no such data in the db!");
+			return Promise.reject("No data found in the db");
+		}
 	}
 
 }
-
-
-export { UserDAO };
 
