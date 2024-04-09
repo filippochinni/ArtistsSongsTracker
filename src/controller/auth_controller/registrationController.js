@@ -16,7 +16,7 @@ const confirmPasswordTextField = document.getElementById("registration-field-pas
 const registrationButton = document.getElementById("registration-button");
 
 const loginButton = document.getElementById("login-button");
-loginButton.parentElement.href = `${BASE_URL}`;
+loginButton.parentElement.href = `${BASE_URL}/`;
 
 
 function registerUser() {
