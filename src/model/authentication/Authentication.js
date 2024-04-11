@@ -10,7 +10,6 @@ export class Authentication {
 	}
 
 	register(email, password) {
-		console.log("auth", this.#auth); //TESTETSTESTTES
 		return new Promise((resolve, reject) => {
 			createUserWithEmailAndPassword(this.#auth, email, password)
 				.then((userCredential) => {

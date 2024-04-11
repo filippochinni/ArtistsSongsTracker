@@ -75,26 +75,26 @@ export class Song {
 
 	toJSON() {
 		return {
-			title: this.#title,
-			kanji_title: this.#kanji_title,
-			song_link: this.#song_link,
-			search_on_YT: this.#search_on_YT,
-			single_album: this.#single_album,
-			year: this.#year,
-			check: this.#check
+			"Title": this.#title,
+			"Kanji Title": this.#kanji_title,
+			"Song": this.#song_link,
+			"Search on YT": this.#search_on_YT,
+			"Single/Album": this.#single_album,
+			"Year": this.#year,
+			"Check": this.#check
 		};
 	}
 
 	static fromJSON(json) {
 		const song = new Song();
 
-		song.#title = json.title;
-		song.#kanji_title = json.kanji_title;
-		song.#song_link = json.song_link;
-		song.#search_on_YT = json.search_on_YT;
-		song.#single_album = json.single_album;
-		song.#year = json.year;
-		song.#check = json.check;
+		song.#title = json[fieldNamesConversion.title];
+		song.#kanji_title = json[fieldNamesConversion.kanji_title];
+		song.#song_link = json[fieldNamesConversion.song_link];
+		song.#search_on_YT = json[fieldNamesConversion.search_on_YT];
+		song.#single_album = json[fieldNamesConversion.single_album];
+		song.#year = json[fieldNamesConversion.year];
+		song.#check = json[fieldNamesConversion.check];
 
 		return song;
 	}

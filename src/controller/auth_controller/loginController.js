@@ -1,8 +1,6 @@
 import { Authentication } from "../../model/authentication/Authentication.js";
 import { UserDAO } from "../../model/database/db_DAOs/userDAO.js";
-import { User } from "../../model/domain/user/User.js";
-import { SESSION_STORAGE_KEYS } from "../../model/constants/storageConstants.js";
-import { BASE_URL } from "../../main.js";
+import { BASE_URL, updateCurrentUser } from "../../main.js";
 
 
 const mAuthentication = new Authentication();
@@ -28,7 +26,7 @@ function loginUser() {
 			mUserDAO.getUser(userId)
 				.then((user) => {
 					console.log("User logged in: ", JSON.stringify(user));
-					sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+					updateCurrentUser(user);
 
 					window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
 				});

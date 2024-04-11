@@ -1,6 +1,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
 import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js';
+import { getStorage } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js';
 
 
 const firebaseConfig = {
@@ -19,10 +20,11 @@ function initializeFirebase() {
 			const firebase_app = initializeApp(firebaseConfig);
 			const firestore = getFirestore(firebase_app);
 			const firebase_auth = getAuth(firebase_app);
+			const firebase_storage = getStorage(firebase_app);
 
 			console.log("Firebase initialized successfully");
 
-			resolve({firestore: firestore, firebase_auth: firebase_auth, firebase_app: firebase_app});
+			resolve({firebase_app: firebase_app, firestore: firestore, firebase_auth: firebase_auth, firebase_storage: firebase_storage});
 		} catch (error) {
 			console.error("Failed to initialize Firebase:", error);
 			reject(error);

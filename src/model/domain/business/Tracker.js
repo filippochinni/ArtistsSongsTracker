@@ -1,3 +1,6 @@
+import { Song } from "./Song.js";
+
+
 export class Tracker {
 	#trackerId;
 	#artist;
@@ -74,12 +77,13 @@ export class Tracker {
 
 	toJSON() {
 		return {
+			trackerId: this.#trackerId,
 			artist: this.#artist,
 			description: this.#description,
 			logo: this.#logo,
 			searchBackgroundImage: this.#searchBackgroundImage,
 			backgroundImage: this.#backgroundImage,
-			songList: this.#songList
+			songList: this.#songList.map((song) => song.toJSON())
 		};
 	}
 
@@ -93,7 +97,7 @@ export class Tracker {
 		tracker.#logo = json.logo;
 		tracker.#searchBackgroundImage = json.searchBackgroundImage;
 		tracker.#backgroundImage = json.backgroundImage;
-		tracker.#songList = json.songList;
+		tracker.#songList = json.songList.map((song) => Song.fromJSON(song));
 
 		return tracker;
 	}

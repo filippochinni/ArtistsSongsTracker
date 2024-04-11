@@ -1,3 +1,6 @@
+import { Tracker } from '../business/Tracker.js';
+
+
 export class User {
 	#userId;
 	#admin;
@@ -13,7 +16,7 @@ export class User {
 
 		this.#admin = false;
 
-		this.#trackerList = {};
+		this.#trackerList = [];
 	}
 
 	get userId() {
@@ -71,7 +74,7 @@ export class User {
 			username: this.#username,
 			email: this.#email,
 			password: this.#password,
-			trackerList: this.#trackerList
+			trackerList: this.#trackerList.map((tracker) => tracker.toJSON())
 		};
 	}
 
@@ -81,7 +84,7 @@ export class User {
 			username: this.#username,
 			email: this.#email,
 			password: this.#password,
-			trackerList: this.#trackerList
+			trackerList: this.#trackerList.map((tracker) => tracker.toJSON())
 		};
 	}
 
@@ -94,13 +97,35 @@ export class User {
 		user.#username = json.username;
 		user.#email = json.email;
 		user.#password = json.password;
-		user.#trackerList = json.trackerList;
+		user.#trackerList = json.trackerList.map((tracker) => Tracker.fromJSON(tracker, tracker.trackerId));
 
 		return user;
 	}
 
+	static fromJSON_special(json) {
+		const user = new User();
+
+		user.#userId = json.userId;
+
+		user.#admin = json.admin;
+		user.#username = json.username;
+		user.#email = json.email;
+		user.#password = json.password;
+		user.#trackerList = json.trackerList.map((tracker) => Tracker.fromJSON(tracker, tracker.trackerId));
+
+		return user;	
+	}
+
 	toString() {
 		return `User: {${this.#userId}, ${this.#admin}, ${this.#username}, ${this.#email}, ${this.#password}, ${this.#trackerList}}`;
+	}
+
+	checkTrackerExists(trackerId) {
+		return this.#trackerList.some((tracker) => tracker.trackerId === trackerId);
+	}
+
+	addTracker(tracker) {
+		this.#trackerList.push(tracker);
 	}
 
 }

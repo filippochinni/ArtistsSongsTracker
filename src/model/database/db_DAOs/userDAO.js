@@ -35,5 +35,17 @@ export class UserDAO {
 		}
 	}
 
+	async updateUser(userObj, userId) {
+		try {
+			await setDoc(doc(this.#db, DB_NODES.USERS, userId), userObj.toJSON());
+			console.log("User updated in db: ", userId, userObj);
+
+			Promise.resolve();
+		} catch (e) {
+			console.error("Error updating user in db: ", e);
+			Promise.reject(e);
+		}
+	}
+
 }
 

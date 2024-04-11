@@ -13,10 +13,46 @@
 </head>
 <body>
 	<header>
-		<h1>temp</h1>
-	</header>
+        <h1 id="title">Songs Tracker</h1>
+        <p id="subtitle"></p>
+		<p id="feedback"></p>
+    </header>
+
+    <div id="input-div">
+        <input id="search-bar" type="text"/>
+
+        <div id="search-buttons-div">
+            <button id="search-name-button" class="search-button">Search by Name</button>
+            <button id="search-album-button" class="search-button">Search by Album/Single</button>
+            <button id="search-year-button" class="search-button">Search by Year</button>
+        </div>
+
+        <div id="track-buttons-div">
+            <button id="playlist-song-button" class="track-button">Playlist Songs</button>
+            <button id="heard-song-button" class="track-button">Heard Songs</button>
+            <button id="unheard-song-button" class="track-button">Unheard Songs</button>
+        </div>
+
+        <div id="sort-buttons-div">
+            <button id="sort-name-button" class="sort-button">Song
+                <img class="sort-icon"/>
+            </button>
+            <button id="sort-album-button" class="sort-button">Album
+                <img class="sort-icon"/>
+            </button>
+            <button id="sort-year-button" class="sort-button">Year
+                <img class="sort-icon"/>
+            </button>
+        </div>
+
+    </div>
+
+    <div id="output-div">
+
+    </div>
 	
 
-	<script type="module" src="../../src/controller/"></script>
+	<script type="module" src="../../src/main.js"></script>
+	<script type="module" src="../../src/controller/tracker_controller/songTrackerController.js"></script>
 </body>
 </html>

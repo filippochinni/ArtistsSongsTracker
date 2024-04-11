@@ -35,4 +35,22 @@ export class TrackerDAO {
 		}
 	}
 
+	async getAllTrackers() {
+		let trackerList = [];
+		
+		const querySnapshot = await getDocs(collection(this.#db, DB_NODES.TRACKERS));
+		
+		if (querySnapshot.empty) {
+			console.error("No data found in the db!");
+			return Promise.reject("No data found in the db");
+		}
+
+		querySnapshot.forEach((doc) => {
+			const tracker = Tracker.fromJSON(doc.data(), doc.id);
+			trackerList.push(tracker);
+		});
+
+		return Promise.resolve(trackerList);
+	}
+
 }
