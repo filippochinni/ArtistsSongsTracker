@@ -1,5 +1,5 @@
 import { initializeFirebase } from './model/database/firebaseConnection.js';
-import { SESSION_STORAGE_KEYS } from './model/constants/storageConstants.js';
+import { SESSION_STORAGE_KEYS, LOCAL_STORAGE_KEYS } from './model/constants/storageConstants.js';
 import { User } from './model/domain/user/User.js';
 
 
@@ -33,7 +33,10 @@ async function init_Firebase() {
 
 function init_CurrentUser() {
 	if (sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_USER) != null) {
-		mCurrentUser = User.fromJSON_special(JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_USER)));
+		mCurrentUser = User.fromJSON(JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEYS.CURRENT_USER), undefined));
+	}
+	else if (localStorage.getItem(LOCAL_STORAGE_KEYS.BROWSER_USER) != null) {
+		mCurrentUser = User.fromJSON(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.BROWSER_USER), undefined));
 	}
 }
 
@@ -46,6 +49,7 @@ function init_indexHTML() {
 
 function updateCurrentUser(currentUser) {
 	sessionStorage.setItem(SESSION_STORAGE_KEYS.CURRENT_USER, JSON.stringify(currentUser));
+	// localStorage.setItem(LOCAL_STORAGE_KEYS.BROWSER_USER, JSON.stringify(currentUser));
 }
 
 function showLoadingScreen() {
