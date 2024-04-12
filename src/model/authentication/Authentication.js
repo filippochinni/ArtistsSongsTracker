@@ -1,5 +1,5 @@
 import { mFirebaseAuth } from '../../main.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js';
 
 
 export class Authentication {
@@ -9,48 +9,46 @@ export class Authentication {
 		this.#auth = mFirebaseAuth;
 	}
 
-	register(email, password) {
-		return new Promise((resolve, reject) => {
-			createUserWithEmailAndPassword(this.#auth, email, password)
-				.then((userCredential) => {
-					const userId = userCredential.user.uid;
-					console.log("User registered successful:", userId);
-					resolve(userId);
-				})
-				.catch((error) => {
-					console.error("Error registering user:", error);
-					reject(error);
-				});
-		});
+	async register(email, password) {
+		try {
+			const userCredential = await createUserWithEmailAndPassword(this.#auth, email, password);
+			const userId = userCredential.user.uid;
+
+			console.log("User registered successful:", userId); //LOG
+
+			return userId;
+		}
+		catch (error) {
+			console.error("Error registering user:", error);
+			throw error;
+		}
 	}
 
-	login(email, password) {
-		return new Promise((resolve, reject) => {
-			signInWithEmailAndPassword(this.#auth, email, password)
-				.then((userCredential) => {
-					const userId = userCredential.user.uid;
-					console.log("User login successful:", userId);
-					resolve(userId);
-				})
-				.catch((error) => {
-					console.error("Error logging in user:", error);
-					reject(error);
-				});
-		});
+	async login(email, password) {
+		try {
+			const userCredential = await signInWithEmailAndPassword(this.#auth, email, password);
+			const userId = userCredential.user.uid;
+			
+			console.log("User login successful:", userId); //LOG
+			
+			return userId;
+		}
+		catch (error) {
+			console.error("Error logging in user:", error);
+			throw error;
+		}
 	}
 
-	logout() {
-		return new Promise((resolve, reject) => {
-			this.#auth.signOut()
-				.then(() => {
-					console.log("User logged out");
-					resolve();
-				})
-				.catch((error) => {
-					console.error("Error logging out user:", error);
-					reject(error);
-				});
-		});
+	async logout() {
+		try {
+			await signOut(this.#auth);
+			
+			console.log("User logged out");	//LOG
+		}
+		catch (error) {
+			console.error("Error logging out user:", error);
+			throw error;
+		}
 	}
 
 }

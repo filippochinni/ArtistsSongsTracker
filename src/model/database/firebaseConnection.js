@@ -14,22 +14,21 @@ const firebaseConfig = {
 };
 
 
-function initializeFirebase() {
-	return new Promise((resolve, reject) => {
-		try {
-			const firebase_app = initializeApp(firebaseConfig);
-			const firestore = getFirestore(firebase_app);
-			const firebase_auth = getAuth(firebase_app);
-			const firebase_storage = getStorage(firebase_app);
+async function initializeFirebase() {
+    try {
+        const firebase_app = initializeApp(firebaseConfig);
+        const firestore = getFirestore(firebase_app);
+        const firebase_auth = getAuth(firebase_app);
+        const firebase_storage = getStorage(firebase_app);
 
-			console.log("Firebase initialized successfully");
+        console.log("Firebase initialized successfully"); //LOG
 
-			resolve({firebase_app: firebase_app, firestore: firestore, firebase_auth: firebase_auth, firebase_storage: firebase_storage});
-		} catch (error) {
-			console.error("Failed to initialize Firebase:", error);
-			reject(error);
-		}
-	});
+        return {firebase_app: firebase_app, firestore: firestore, firebase_auth: firebase_auth, firebase_storage: firebase_storage};
+    }
+	catch (error) {
+        console.error("Failed to initialize Firebase:", error);
+        throw error;
+    }
 }
 
 

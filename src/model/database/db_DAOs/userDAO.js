@@ -13,10 +13,12 @@ export class UserDAO {
 
 	async saveUser(userObj, userId) {
 		try {
-			await setDoc(doc(this.#db, DB_NODES.USERS, userId), userObj.toJSON_special());
-			console.log("User saved in db: ", userId, userObj);
-		} catch (e) {
-			console.error("Error saving user in db: ", e);
+			await setDoc(doc(this.#db, DB_NODES.USERS, userId), userObj.toJSON());
+			
+			console.log("User saved in db: ", userId, userObj); //LOG
+		}
+		catch (error) {
+			console.error("Error saving User in db: ", error);
 		}
 	}
 
@@ -24,26 +26,26 @@ export class UserDAO {
 		const docRef = doc(this.#db, DB_NODES.USERS, userId);
 		const docSnap = await getDoc(docRef);
 
-		if (docSnap.exists()) {
-			console.log("Snapshot Result: ", docSnap.data());
-
-			const user = User.fromJSON(docSnap.data(), userId);
-			return Promise.resolve(user);
-		} else {
+		if (!docSnap.exists()) {
 			console.error("There is no such data in the db!");
-			return Promise.reject("No data found in the db");
+			return null;
 		}
+
+		console.log("Snapshot Result (getUser): ", docSnap.data()); //LOG
+
+		const user = User.fromJSON(docSnap.data(), userId);
+		return user;
 	}
 
 	async updateUser(userObj, userId) {
 		try {
 			await setDoc(doc(this.#db, DB_NODES.USERS, userId), userObj.toJSON());
-			console.log("User updated in db: ", userId, userObj);
-
-			Promise.resolve();
-		} catch (e) {
-			console.error("Error updating user in db: ", e);
-			Promise.reject(e);
+			
+			console.log("User updated in db: ", userId, userObj); //LOG
+		}
+		catch (error) {
+			console.error("Error updating User in db: ", error);
+			throw error;
 		}
 	}
 

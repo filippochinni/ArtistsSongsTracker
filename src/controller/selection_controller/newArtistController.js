@@ -1,7 +1,7 @@
 import { TrackerDAO } from "../../model/database/db_DAOs/TrackerDAO.js";
 import { Tracker } from "../../model/domain/business/Tracker.js";
 import { Song } from "../../model/domain/business/Song.js";
-import { FirebaseStorage, TRACKERS_STORAGE_PATH } from "../../model/database/db_storage/firebaseStorage.js";
+import { FirebaseStorage, TRACKERS_STORAGE_PATH } from "../../model/database/db_storage/FirebaseStorage.js";
 
 
 const mTrackerDAO = new TrackerDAO();
@@ -17,7 +17,7 @@ const songListTextField = document.getElementById("new-artist-field-songs-list-f
 const submitNewArtistButton = document.getElementById("submit-new-artist-button");
 
 
-function createNewTracker() {
+async function createNewTracker() {
 	const artist = artistTextField.value;
 	const description = descriptionTextField.value;
 	const logoFile = logoTextField.files[0];
@@ -25,27 +25,29 @@ function createNewTracker() {
 	const backgroundImageFile = backgroundImageTextField.files[0];
 	const songListFile = songListTextField.files[0];
 
-	uploadImages(artist, logoFile, searchBackgroundImageFile, backgroundImageFile)
-		.then((results) => {
-			const logoUploadResult = results[0];
-			const searchBackgroundImageUploadResult = results[1];
-			const backgroundImageUploadResult = results[2];
+	if (!checkFields()) {
+		alert("Please fill all the fields correctly");
+		return;
+	}
 
-			createSongList(songListFile)
-				.then((songList) => {
-					let trackerObj = new Tracker(artist, description, logoUploadResult, searchBackgroundImageUploadResult, backgroundImageUploadResult, songList);
-					mTrackerDAO.saveTracker(trackerObj);
-				})
-				.catch((error) => {
-					console.error("ERROR", error);
-				});
+	try {
+		const results = await uploadImages(artist, logoFile, searchBackgroundImageFile, backgroundImageFile);
+		const logoUploadResult = results[0];
+		const searchBackgroundImageUploadResult = results[1];
+		const backgroundImageUploadResult = results[2];
 
-		})
-
+		const songList = await createSongList(songListFile);
+		const trackerObj = new Tracker(artist, description, logoUploadResult, searchBackgroundImageUploadResult, backgroundImageUploadResult, songList);
+		await mTrackerDAO.saveTracker(trackerObj);
+	}
+	catch (error) {
+		alert("Error creating new tracker. Please check the fields and try again.");
+		console.error("Error creating new tracker:", error);
+	}
 }
 
 function checkFields() {
-	if (artistTextField.value === "" || descriptionTextField.value === "" || logoTextField.value === "" || searchBackgroundImageTextField.value === "" || backgroundImageTextField.value === "" || songListTextField.value === "") {
+	if (!artistTextField.value || !descriptionTextField.value || !logoTextField.files[0] || !searchBackgroundImageTextField.files[0] || !backgroundImageTextField.files[0] || !songListTextField.files[0]) {
 		return false;
 	}
 	else {
@@ -79,17 +81,19 @@ function createSongList(file) {
 				const songList = JSON.parse(event.target.result);
 
 				for (const song of songList) {
-					let s = new Song(song["Title"], song["Kanji Title"], song["Song"], song["Search on YT"], song["Single/Album"], song["Year"], song["Check"]);
+					const s = new Song(song["Title"], song["Kanji Title"], song["Song"], song["Search on YT"], song["Single/Album"], song["Year"], song["Check"]);
 					result_list.push(s);
 				}
 
 				resolve(result_list);
-			} catch (error) {
-				console.error('Error:', error);
+			}
+			catch (error) {
+				console.error('Error parsing JSON file:', error);
 				reject(error);
 			}
 		};
 
+		reader.onerror = (error) => reject(error);
 		reader.readAsText(file);
 	});
 }

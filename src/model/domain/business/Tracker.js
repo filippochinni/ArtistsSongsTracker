@@ -76,15 +76,27 @@ export class Tracker {
 	}
 
 	toJSON() {
-		return {
-			trackerId: this.#trackerId,
-			artist: this.#artist,
-			description: this.#description,
-			logo: this.#logo,
-			searchBackgroundImage: this.#searchBackgroundImage,
-			backgroundImage: this.#backgroundImage,
-			songList: this.#songList.map((song) => song.toJSON())
-		};
+		if (this.#trackerId) {
+			return {
+				trackerId: this.#trackerId,
+				artist: this.#artist,
+				description: this.#description,
+				logo: this.#logo,
+				searchBackgroundImage: this.#searchBackgroundImage,
+				backgroundImage: this.#backgroundImage,
+				songList: this.#songList.map((song) => song.toJSON())
+			};
+		}
+		else {
+			return {
+				artist: this.#artist,
+				description: this.#description,
+				logo: this.#logo,
+				searchBackgroundImage: this.#searchBackgroundImage,
+				backgroundImage: this.#backgroundImage,
+				songList: this.#songList.map((song) => song.toJSON())
+			};
+		}
 	}
 
 	static fromJSON(json, trackerId) {

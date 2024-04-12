@@ -7,53 +7,41 @@ const mCurrentUser = mmCurrentUser;
 const mTrackerDAO = new TrackerDAO();
 const mUserDAO = new UserDAO();
 
-const trackerId2 = new URLSearchParams(window.location.search).get("trackerId");
+const trackerId = new URLSearchParams(window.location.search).get("trackerId");
 
 const outputDiv = document.getElementById("output-div");
 
 
-function loadSongsList(trackerId) {
-	createSongsTrackerForUser(trackerId)
-		.then(() => {
-			mTrackerDAO.getTracker(trackerId)
-				.then((tracker) => {
-					tracker.songList.forEach((song) => {
-						outputDiv.innerHTML += `<p>${song.title}</p>`;
-					});
-				})
-				.catch((error) => {
-					console.error("ERROR", error);
-				});
-		});
-}
-
-function createSongsTrackerForUser(trackerId) {
-	return new Promise((resolve, reject) => {
+async function loadSongsList(trackerId) {
+	try {
 		if (!mCurrentUser.checkTrackerExists(trackerId)) {
-			mTrackerDAO.getTracker(trackerId)
-				.then((tracker) => {
-					mCurrentUser.addTracker(tracker);
-					updateCurrentUser(mCurrentUser);
-					console.log("Tracker added to user!");
-
-					mUserDAO.updateUser(mCurrentUser, mCurrentUser.userId)
-						.then(() => {
-							console.log("Tracker added to user!");
-							resolve();
-						})
-						.catch((error) => {
-							console.error("ERROR", error);
-							reject();
-						});
-				})
-				.catch((error) => {
-					console.error("ERROR", error);
-					reject();
-				});
+			await createSongsTrackerForUser(trackerId);
 		}
-		resolve();
-	})
+
+		const tracker = await mTrackerDAO.getTracker(trackerId);
+
+		tracker.songList.forEach((song) => {
+			outputDiv.innerHTML += `<p>${song.title}</p>`;
+		});
+	}
+	catch (error) {
+		console.error("Error loading the Song list: ", error);
+	}
+}
+
+async function createSongsTrackerForUser(trackerId) {
+    try {
+        const tracker = await mTrackerDAO.getTracker(trackerId);
+        mCurrentUser.addTracker(tracker);
+
+        updateCurrentUser(mCurrentUser);
+        await mUserDAO.updateUser(mCurrentUser, mCurrentUser.userId);
+    }
+	catch (error) {
+        console.error("Error creating the Song tracker for the user: ", error);
+        throw error;
+    }
 }
 
 
-loadSongsList(trackerId2);
+loadSongsList(trackerId);

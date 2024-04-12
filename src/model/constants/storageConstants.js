@@ -3,7 +3,7 @@ const SESSION_STORAGE_KEYS = {
 };
 
 const LOCAL_STORAGE_KEYS = {
-
+	BROWSER_USER: "github/filippochinni/Artists-Songs-Tracker/user_credentials"
 };
 
 

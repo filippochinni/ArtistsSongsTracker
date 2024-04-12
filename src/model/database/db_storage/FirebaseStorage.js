@@ -2,6 +2,7 @@ import { mFirebaseStorage } from "../../../main.js";
 import { ref, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
 
+export const USERS_STORAGE_PATH = "Users/";
 export const TRACKERS_STORAGE_PATH = "Trackers/";
 
 export class FirebaseStorage {
@@ -11,29 +12,22 @@ export class FirebaseStorage {
 		this.#storage = mFirebaseStorage;
 	}
 
-	uploadFile(file, fileType, path, trackerName) {
-		return new Promise((resolve, reject) => {
+	async uploadFile(file, fileType, path, trackerName) {
+		try {
 			const storageRef = ref(this.#storage, `${path}${trackerName}/`);
 			const fileRef = ref(storageRef, `${fileType}_(${file.name})`);
+	
+			const snapshot = await uploadBytes(fileRef, file);
+			const url = await getDownloadURL(fileRef);
 
-			uploadBytes(fileRef, file)
-				.then((snapshot) => {
-					console.log("File uploaded successfully", snapshot);
-
-					getDownloadURL(fileRef)
-						.then((url) => {
-							console.log("File available at: ", url);
-							resolve(url);
-						})
-						.catch((error) => {
-							console.error("Error getting download URL: ", error);
-							reject(error);
-						});
-
-				}).catch((error) => {
-					console.error("Error uploading file: ", error);
-					reject(error);
-				});
-		});
+			console.log("File uploaded: ", snapshot, url); //LOG
+	
+			return url;
+		}
+		catch (error) {
+			console.error("Error uploading file: ", error);
+			throw error;
+		}
 	}
+	
 }

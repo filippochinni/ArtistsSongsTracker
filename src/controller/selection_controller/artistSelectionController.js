@@ -11,19 +11,23 @@ const artistsTrackersDiv = document.getElementById("artists-trackers-div");
 const newArtistButton = document.getElementById("new-artist-button");
 
 
-function loadTrackersList() {
-	showLoadingScreen();
+async function loadTrackersList() {
+    showLoadingScreen();
 
-	mTrackerDAO.getAllTrackers().then((trackers) => {
-		trackers.forEach((tracker) => {
-			const artistTrackerElement = createArtistTrackerElement(tracker.trackerId, tracker.artist);
-			artistsTrackersDiv.appendChild(artistTrackerElement);
-		});
+    try {
+        const trackers = await mTrackerDAO.getAllTrackers();
 		
-		hideLoadingScreen();
-	});
-
-
+        trackers.forEach((tracker) => {
+            const artistTrackerElement = createArtistTrackerElement(tracker.trackerId, tracker.artist);
+            artistsTrackersDiv.appendChild(artistTrackerElement);
+        });
+    }
+	catch (error) {
+        console.error("Error loading trackers list:", error);
+    }
+	finally {
+        hideLoadingScreen();
+    }
 }
 
 function createArtistTrackerElement(trackerId, artistName) {
@@ -48,10 +52,7 @@ function createArtistTrackerElement(trackerId, artistName) {
 }
 
 function init_ArtistSelectionPage() {
-	if (isAdmin) {
-		newArtistButton.disabled = false;
-	}
-
+	newArtistButton.disabled = !isAdmin;
 	loadTrackersList();
 }
 

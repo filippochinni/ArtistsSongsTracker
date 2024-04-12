@@ -68,30 +68,31 @@ export class User {
 	}
 
 	toJSON() {
-		return {
-			userId: this.#userId,
-			admin: this.#admin,
-			username: this.#username,
-			email: this.#email,
-			password: this.#password,
-			trackerList: this.#trackerList.map((tracker) => tracker.toJSON())
-		};
-	}
-
-	toJSON_special() {
-		return {
-			admin: this.#admin,
-			username: this.#username,
-			email: this.#email,
-			password: this.#password,
-			trackerList: this.#trackerList.map((tracker) => tracker.toJSON())
-		};
+		if (this.#userId) {
+			return {
+				userId: this.#userId,
+				admin: this.#admin,
+				username: this.#username,
+				email: this.#email,
+				password: this.#password,
+				trackerList: this.#trackerList.map((tracker) => tracker.toJSON())
+			};
+		}
+		else {
+			return {
+				admin: this.#admin,
+				username: this.#username,
+				email: this.#email,
+				password: this.#password,
+				trackerList: this.#trackerList.map((tracker) => tracker.toJSON())
+			};
+		}
 	}
 
 	static fromJSON(json, userId) {
 		const user = new User();
 
-		user.#userId = userId;
+		user.#userId = userId ? userId : json.userId;
 
 		user.#admin = json.admin;
 		user.#username = json.username;
@@ -100,20 +101,6 @@ export class User {
 		user.#trackerList = json.trackerList.map((tracker) => Tracker.fromJSON(tracker, tracker.trackerId));
 
 		return user;
-	}
-
-	static fromJSON_special(json) {
-		const user = new User();
-
-		user.#userId = json.userId;
-
-		user.#admin = json.admin;
-		user.#username = json.username;
-		user.#email = json.email;
-		user.#password = json.password;
-		user.#trackerList = json.trackerList.map((tracker) => Tracker.fromJSON(tracker, tracker.trackerId));
-
-		return user;	
 	}
 
 	toString() {

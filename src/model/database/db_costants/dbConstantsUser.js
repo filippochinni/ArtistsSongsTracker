@@ -1,5 +1,5 @@
 const DB_CONSTANTS_USER = {
-	//USER_ID: 'userId',
+	USER_ID: 'userId',
 	USERNAME: 'username',
 	EMAIL: 'email',
 	PASSWORD: 'password',

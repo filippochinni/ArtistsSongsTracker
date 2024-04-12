@@ -18,30 +18,31 @@ const loginButton = document.getElementById("login-button");
 loginButton.parentElement.href = `${BASE_URL}/`;
 
 
-function registerUser() {
-	const username = usernameTextField.value;
-	const email = emailTextField.value;
-	const password = passwordTextField.value;
+async function registerUser() {
+    const username = usernameTextField.value;
+    const email = emailTextField.value;
+    const password = passwordTextField.value;
 
-	if (!checkFields()) {
-		alert("Please fill all the fields correctly");
-		return;
-	}
+    if (!checkFields()) {
+        alert("Please fill all the fields correctly");
+        return;
+    }
 
-	mAuthentication.register(email, password)
-		.then((userId) => {
-			let userObj = new User(username, email, password);
-			userObj.userId = userId;
-			mUserDAO.saveUser(userObj, userId)
-				.then(() => {
-					updateCurrentUser(userObj);
+    try {
+        const userId = await mAuthentication.register(email, password);
 
-					window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
-				});
-		})
-		.catch((error) => {
-			console.error("Error registering user:", error);
-		});
+        const userObj = new User(username, email, password);
+        userObj.userId = userId;
+        await mUserDAO.saveUser(userObj, userId);
+
+        updateCurrentUser(userObj);
+
+        window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
+    }
+	catch (error) {
+	    alert("Error registering user. Maybe an account with this email already exists.");		
+        console.error("Error registering user:", error);
+    }
 }
 
 function checkFields() {
@@ -55,6 +56,7 @@ function checkFields() {
 		return true;
 	}
 }
+
 
 registrationButton.addEventListener("click", registerUser);
 

@@ -14,9 +14,11 @@ export class TrackerDAO {
 	async saveTracker(trackerObj) {
 		try {
 			await addDoc(collection(this.#db, DB_NODES.TRACKERS), trackerObj.toJSON());
-			console.log("Tracker saved in db: ", trackerObj);
-		} catch (e) {
-			console.error("Error saving tracker in db: ", e);
+
+			console.log("Tracker saved in db: ", trackerObj); //LOG
+		}
+		catch (error) {
+			console.error("Error saving Tracker in db: ", error);
 		}
 	}
 
@@ -24,15 +26,15 @@ export class TrackerDAO {
 		const docRef = doc(this.#db, DB_NODES.TRACKERS, trackerId);
 		const docSnap = await getDoc(docRef);
 
-		if (docSnap.exists()) {
-			console.log("Snapshot Result: ", docSnap.data());
-
-			const tracker = Tracker.fromJSON(docSnap.data(), trackerId);
-			return Promise.resolve(tracker);
-		} else {
+		if (!docSnap.exists()) {
 			console.error("There is no such data in the db!");
-			return Promise.reject("No data found in the db");
+			return null;
 		}
+		
+		console.log("Snapshot Result (getTracker): ", docSnap.data()); //LOG
+
+		const tracker = Tracker.fromJSON(docSnap.data(), trackerId);
+		return tracker;
 	}
 
 	async getAllTrackers() {
@@ -41,8 +43,8 @@ export class TrackerDAO {
 		const querySnapshot = await getDocs(collection(this.#db, DB_NODES.TRACKERS));
 		
 		if (querySnapshot.empty) {
-			console.error("No data found in the db!");
-			return Promise.reject("No data found in the db");
+			console.error("There is no such data in the db!");
+			return null;
 		}
 
 		querySnapshot.forEach((doc) => {
@@ -50,7 +52,7 @@ export class TrackerDAO {
 			trackerList.push(tracker);
 		});
 
-		return Promise.resolve(trackerList);
+		return trackerList;
 	}
 
 }

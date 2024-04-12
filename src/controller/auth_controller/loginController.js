@@ -12,28 +12,29 @@ const passwordTextField = document.getElementById("login-field-password");
 const loginButton = document.getElementById("login-button");
 
 
-function loginUser() {
-	const email = emailTextField.value;
-	const password = passwordTextField.value;
+async function loginUser() {
+    const email = emailTextField.value;
+    const password = passwordTextField.value;
 
-	if (!checkFields()) {
-		alert("Please fill all the fields");
-		return;
-	}
+    if (!checkFields()) {
+        alert("Please fill all the fields");
+        return;
+    }
 
-	mAuthentication.login(email, password)
-		.then((userId) => {
-			mUserDAO.getUser(userId)
-				.then((user) => {
-					console.log("User logged in: ", JSON.stringify(user));
-					updateCurrentUser(user);
+    try {
+        const userId = await mAuthentication.login(email, password);
+        const user = await mUserDAO.getUser(userId);
+        
+        console.log("User logged in: ", JSON.stringify(user)); //LOG
 
-					window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
-				});
-		})
-		.catch((error) => {
-			console.error("Error logging in user:", error);
-		});
+        updateCurrentUser(user);
+
+        window.location.assign(`${BASE_URL}/src/view/artistSelection.html`);
+    }
+	catch (error) {
+		alert("Error logging in user. Please check your credentials and try again.");
+        console.error("Error logging in user:", error);
+    }
 }
 
 function checkFields() {
