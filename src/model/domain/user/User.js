@@ -111,8 +111,17 @@ export class User {
 		return this.#trackerList.some((tracker) => tracker.trackerId === trackerId);
 	}
 
+	getTracker(trackerId) {
+		return this.#trackerList.find((tracker) => tracker.trackerId === trackerId);
+	}
+
 	addTracker(tracker) {
 		this.#trackerList.push(tracker);
+	}
+
+	updateTracker(tracker) {
+		const index = this.#trackerList.findIndex((elem) => elem.trackerId === tracker.trackerId);
+		this.#trackerList[index] = tracker;
 	}
 
 }

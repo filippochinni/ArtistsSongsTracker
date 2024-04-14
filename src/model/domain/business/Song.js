@@ -105,7 +105,7 @@ export class Song {
 
 }
 
-const fieldNamesConversion = {
+export const fieldNamesConversion = {
 	title: "Title",
 	kanji_title: "Kanji Title",
 	song_link: "Song",
